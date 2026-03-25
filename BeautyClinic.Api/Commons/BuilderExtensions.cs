@@ -1,3 +1,4 @@
+using BeautyClinic.Api.Providers;
 using BeautyClinic.Core.Interfaces;
 using BeautyClinic.Core.Interfaces.Appointment;
 using BeautyClinic.Core.Interfaces.Consulation;
@@ -29,6 +30,8 @@ public static class BuilderExtensions
         public void AddConfigurations()
         {
             Configurations.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<ITenantProvider, TenantProvider>();
         }
 
         public void AddDbContext()
