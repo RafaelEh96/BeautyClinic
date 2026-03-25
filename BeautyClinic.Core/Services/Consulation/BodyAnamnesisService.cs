@@ -29,7 +29,7 @@ public class BodyAnamnesisService(
         var femaleHabits = await femaleHabitsService.GetFemaleHabitsByClientId(entity.ClientId);
         var habits = await habitsService.GetHabitsByClientId(entity.ClientId);
         var patientHistory = await patientHistoryService.GetPatientHistoryByClientId(entity.ClientId);
-        result.Measurement = measurement.MapToDto();
+        result.Measurement = measurement!.MapToDto();
         result.FemaleHabits = femaleHabits;
         result.Habits = habits;
         result.PatientHistory = patientHistory;

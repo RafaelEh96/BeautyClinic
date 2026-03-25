@@ -19,7 +19,7 @@ public class Individual : BaseEntity
         get
         {
             var today = DateTime.Today;
-            var age = today.Year - Birthdate.Value.Year;
+            var age = today.Year - Birthdate!.Value.Year;
             if (Birthdate.Value.Date > today.AddYears(-age)) age--;
             return age;
         }

@@ -1,4 +1,6 @@
-﻿namespace BeautyClinic.Core.Base;
+﻿using BeautyClinic.Core.Models.Clinic;
+
+namespace BeautyClinic.Core.Base;
 
 public abstract class BaseEntity
 {
@@ -9,4 +11,6 @@ public abstract class BaseEntity
     public DateTime? UpdatedAt { get; set; }
     public string UpdatedBy { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
+    public long ClinicId { get; set; }
+    public Clinic? Clinic { get; set; }
 }

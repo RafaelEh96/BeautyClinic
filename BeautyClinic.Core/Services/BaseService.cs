@@ -5,16 +5,11 @@ using BeautyClinic.Core.Interfaces;
 
 namespace BeautyClinic.Core.Services;
 
-public class BaseService<T> : IService<T> where T : BaseEntity
+public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) : IService<T>
+    where T : BaseEntity
 {
-    protected readonly IRepository<T> _repository;
-    protected readonly IUnitOfWork _unitOfWork;
-
-    public BaseService(IRepository<T> repository, IUnitOfWork unitOfWork)
-    {
-        _repository = repository;
-        _unitOfWork = unitOfWork;
-    }
+    protected readonly IRepository<T> _repository = repository;
+    protected readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<T> InsertOrUpdateAsync(T entity)
     {
@@ -44,7 +39,7 @@ public class BaseService<T> : IService<T> where T : BaseEntity
     private async Task<T> Inserting(T entity)
     {
         entity.CreatedAt = DateTime.UtcNow;
-        entity.UserId = ClaimsPrincipal.Current.Identity?.Name ?? string.Empty;
+        entity.UserId = ClaimsPrincipal.Current?.Identity?.Name ?? string.Empty;
         await ExecuteWithCommitAsync(() => _repository.AddAsync(entity));
         return entity;
     }
@@ -52,7 +47,7 @@ public class BaseService<T> : IService<T> where T : BaseEntity
     private async Task<T> Updating(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
-        entity.UserId = ClaimsPrincipal.Current.Identity?.Name ?? string.Empty;
+        entity.UserId = ClaimsPrincipal.Current?.Identity?.Name ?? string.Empty;
         await ExecuteWithCommitAsync(() =>
         {
             _repository.Update(entity);
@@ -110,7 +105,7 @@ public class BaseService<T> : IService<T> where T : BaseEntity
     /// <summary>
     /// Execute a write operation followed by a commit (no transaction).
     /// </summary>
-    protected async Task ExecuteWithCommitAsync(Func<Task> action)
+    private async Task ExecuteWithCommitAsync(Func<Task> action)
     {
         await action();
         await _unitOfWork.CommitAsync();
