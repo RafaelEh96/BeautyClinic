@@ -13,12 +13,14 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     private readonly Hashtable _repositories;
     private readonly ILogger<UnitOfWork> _logger;
+    private readonly ITenantProvider _tenantProvider;
     private IDbContextTransaction? _currentTransaction;
 
-    public UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logger)
+    public UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logger, ITenantProvider tenantProvider)
     {
         _context = context;
         _logger = logger;
+        _tenantProvider = tenantProvider;
         _repositories = new Hashtable();
     }
 
@@ -121,7 +123,7 @@ public class UnitOfWork : IUnitOfWork
         {
             var repositoryType = typeof(Repository<>);
             var repositoryInstance = Activator
-                .CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context);
+                .CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context, _tenantProvider);
             _repositories.Add(type, repositoryInstance);
         }
 

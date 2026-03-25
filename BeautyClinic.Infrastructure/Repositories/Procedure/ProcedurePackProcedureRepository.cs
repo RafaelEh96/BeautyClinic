@@ -1,3 +1,4 @@
+using BeautyClinic.Core.Interfaces;
 using BeautyClinic.Core.Interfaces.Procedure;
 using BeautyClinic.Core.Models.Procedure;
 using BeautyClinic.Infrastructure.Context;
@@ -5,12 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeautyClinic.Infrastructure.Repositories.Procedure;
 
-public class ProcedurePackProcedureRepository : Repository<ProcedurePackProcedure>, IProcedurePackProcedureRepository
+public class ProcedurePackProcedureRepository(AppDbContext context, ITenantProvider tenantProvider)
+    : Repository<ProcedurePackProcedure>(context, tenantProvider), IProcedurePackProcedureRepository
 {
-    public ProcedurePackProcedureRepository(AppDbContext context) : base(context)
-    {
-    }
-
     public async Task<IEnumerable<ProcedurePackProcedure>> GetByPackIdAsync(long packId)
     {
         return await _dbSet.Where(p => p.ProcedurePackId == packId).ToListAsync();

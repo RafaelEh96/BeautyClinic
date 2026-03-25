@@ -1,12 +1,13 @@
 using BeautyClinic.Core.DTOs.Appointment;
+using BeautyClinic.Core.Interfaces;
 using BeautyClinic.Core.Interfaces.Appointment;
 using BeautyClinic.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeautyClinic.Infrastructure.Repositories.Appointment;
 
-public class AppointmentRepository(AppDbContext context)
-    : Repository<BeautyClinic.Core.Models.Appointment.Appointment>(context), IAppointmentRepository
+public class AppointmentRepository(AppDbContext context, ITenantProvider  tenantProvider)
+    : Repository<BeautyClinic.Core.Models.Appointment.Appointment>(context, tenantProvider), IAppointmentRepository
 {
     public async Task<List<AppointmentDto>> GetByDateRangeAsync(DateTime dataInicial, DateTime dataFinal)
     {

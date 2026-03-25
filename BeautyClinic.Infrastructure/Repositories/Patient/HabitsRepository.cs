@@ -1,6 +1,7 @@
 using BeautyClinic.Core.DTOs.Patient;
 using BeautyClinic.Core.Exceptions;
 using BeautyClinic.Core.Extensions;
+using BeautyClinic.Core.Interfaces;
 using BeautyClinic.Core.Interfaces.Patient;
 using BeautyClinic.Core.Models.Patient;
 using BeautyClinic.Infrastructure.Context;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeautyClinic.Infrastructure.Repositories.Patient;
 
-public class HabitsRepository(AppDbContext context) : Repository<Habits>(context), IHabitsRepository
+public class HabitsRepository(AppDbContext context, ITenantProvider tenantProvider) : Repository<Habits>(context, tenantProvider), IHabitsRepository
 {
     public async Task<HabitsDto> GetHabitsByClientId(long entityClientId)
     {

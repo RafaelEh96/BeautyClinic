@@ -1,5 +1,7 @@
 using System.Reflection;
+using BeautyClinic.Core.Interfaces;
 using BeautyClinic.Core.Models.Appointment;
+using BeautyClinic.Core.Models.Clinic;
 using BeautyClinic.Core.Models.Consulation;
 using BeautyClinic.Core.Models.Patient;
 using BeautyClinic.Core.Models.Person;
@@ -11,10 +13,14 @@ namespace BeautyClinic.Infrastructure.Context;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    private readonly long _clinicId;
+
+    public AppDbContext(DbContextOptions<AppDbContext> options, ITenantProvider tenantProvider) : base(options)
     {
+        _clinicId = tenantProvider.GetClinicId();
     }
 
+    public DbSet<Clinic> Clinics { get; set; } = null!;
     public DbSet<ProcedurePack> ProcedurePacks { get; set; } = null!;
     public DbSet<Procedure> Procedures { get; set; } = null!;
     public DbSet<ProcedurePackProcedure> ProcedurePackProcedures { get; set; } = null!;
@@ -33,5 +39,19 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.Entity<Address>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<Appointment>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<BodyAnamnesis>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<FacialAnamnesis>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<FemaleHabits>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<Habits>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<Individual>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<Measurements>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<PatientHistory>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<Procedure>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<ProcedurePack>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<ProcedurePackProcedure>().HasQueryFilter(e => e.ClinicId == _clinicId);
+        modelBuilder.Entity<Professional>().HasQueryFilter(e => e.ClinicId == _clinicId);
     }
 }

@@ -10,11 +10,13 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 {
     protected readonly AppDbContext _context;
     protected readonly DbSet<T> _dbSet;
+    private readonly ITenantProvider _tenantProvider;
 
-    public Repository(AppDbContext context)
+    public Repository(AppDbContext context, ITenantProvider tenantProvider)
     {
         _context = context;
         _dbSet = context.Set<T>();
+        _tenantProvider = tenantProvider;
     }
 
     public async Task<T?> GetByIdAsync(long id)
@@ -34,6 +36,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
     public async Task AddAsync(T entity)
     {
+        entity.ClinicId = _tenantProvider.GetClinicId();
         await _dbSet.AddAsync(entity);
     }
 
