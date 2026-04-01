@@ -24,17 +24,17 @@ namespace BeautyClinic.Infrastructure.Migrations
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Appointment.Appointment", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -43,16 +43,16 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long>("ProcedureId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ProcedureId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ProcedureRoom")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<long>("ProfessionalId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ProfessionalId")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -71,6 +71,8 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("ClinicId");
+
                     b.HasIndex("ProcedureId");
 
                     b.HasIndex("ProfessionalId");
@@ -78,13 +80,36 @@ namespace BeautyClinic.Infrastructure.Migrations
                     b.ToTable("Appointment", (string)null);
                 });
 
+            modelBuilder.Entity("BeautyClinic.Core.Models.Clinic.Clinic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Document")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("varchar(18)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clinics", (string)null);
+                });
+
             modelBuilder.Entity("BeautyClinic.Core.Models.Consulation.BodyAnamnesis", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("AssessmentDate")
                         .HasColumnType("datetime(6)");
@@ -93,8 +118,11 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -107,8 +135,8 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
-                    b.Property<long>("MeasurementId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("MeasurementId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(2000)
@@ -128,6 +156,8 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("ClinicId");
+
                     b.HasIndex("MeasurementId");
 
                     b.ToTable("BodyAnamnesis", (string)null);
@@ -135,14 +165,14 @@ namespace BeautyClinic.Infrastructure.Migrations
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Consulation.FacialAnamnesis", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -210,16 +240,15 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("FacialAnamnesis", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.FemaleHabits", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("AcidsUsed")
                         .IsRequired()
@@ -234,8 +263,11 @@ namespace BeautyClinic.Infrastructure.Migrations
                     b.Property<bool>("Breastfeeding")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("ConsumesAlcoholicBeverage")
                         .HasColumnType("tinyint(1)");
@@ -297,16 +329,15 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("FemaleHabits", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.Habits", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("AcidsUsed")
                         .IsRequired()
@@ -318,8 +349,11 @@ namespace BeautyClinic.Infrastructure.Migrations
                     b.Property<bool>("BalencedDiet")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("ConsumesAlcoholicBeverage")
                         .HasColumnType("tinyint(1)");
@@ -366,22 +400,24 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("Habits", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.Measurements", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<decimal>("Bust")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -437,24 +473,26 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("Measurements", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.PatientHistory", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Allergies")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -508,22 +546,24 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("PatientHistory", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Person.Individual", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AddressId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("Birthdate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -567,22 +607,24 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("Individual", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Person.Professional", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AddressId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -641,16 +683,18 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("Professional", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Procedure.Procedure", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ConsumedProducts")
                         .IsRequired()
@@ -695,19 +739,21 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("Procedure", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Procedure.ProcedurePack", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -729,6 +775,9 @@ namespace BeautyClinic.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<int>("SessionsQuantity")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -741,16 +790,21 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("ProcedurePack", (string)null);
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Procedure.ProcedurePackProcedure", b =>
                 {
-                    b.Property<long>("ProcedurePackId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ProcedurePackId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<long>("ProcedureId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ProcedureId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -759,11 +813,8 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -778,6 +829,8 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasKey("ProcedurePackId", "ProcedureId");
 
+                    b.HasIndex("ClinicId");
+
                     b.HasIndex("ProcedureId");
 
                     b.ToTable("ProcedurePackProcedures");
@@ -785,16 +838,16 @@ namespace BeautyClinic.Infrastructure.Migrations
 
             modelBuilder.Entity("BeautyClinic.Core.ValueObjects.Address", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Complement")
                         .IsRequired()
@@ -845,6 +898,8 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClinicId");
+
                     b.ToTable("Addresses", (string)null);
                 });
 
@@ -853,6 +908,12 @@ namespace BeautyClinic.Infrastructure.Migrations
                     b.HasOne("BeautyClinic.Core.Models.Person.Individual", "Client")
                         .WithMany("Appointments")
                         .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -870,6 +931,8 @@ namespace BeautyClinic.Infrastructure.Migrations
 
                     b.Navigation("Client");
 
+                    b.Navigation("Clinic");
+
                     b.Navigation("Procedure");
 
                     b.Navigation("Professional");
@@ -883,6 +946,12 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BeautyClinic.Core.Models.Patient.Measurements", "Measurement")
                         .WithMany("BodyAnamneses")
                         .HasForeignKey("MeasurementId")
@@ -890,6 +959,8 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
+
+                    b.Navigation("Clinic");
 
                     b.Navigation("Measurement");
                 });
@@ -902,7 +973,15 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Client");
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.FemaleHabits", b =>
@@ -913,7 +992,15 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Client");
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.Habits", b =>
@@ -924,7 +1011,15 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Client");
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.Measurements", b =>
@@ -935,7 +1030,15 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Client");
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.PatientHistory", b =>
@@ -946,7 +1049,15 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Client");
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Person.Individual", b =>
@@ -957,7 +1068,15 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Person.Professional", b =>
@@ -968,11 +1087,47 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("Clinic");
+                });
+
+            modelBuilder.Entity("BeautyClinic.Core.Models.Procedure.Procedure", b =>
+                {
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
+                });
+
+            modelBuilder.Entity("BeautyClinic.Core.Models.Procedure.ProcedurePack", b =>
+                {
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Procedure.ProcedurePackProcedure", b =>
                 {
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BeautyClinic.Core.Models.Procedure.Procedure", "Procedure")
                         .WithMany("ProcedurePackProcedures")
                         .HasForeignKey("ProcedureId")
@@ -985,9 +1140,22 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Clinic");
+
                     b.Navigation("Procedure");
 
                     b.Navigation("ProcedurePack");
+                });
+
+            modelBuilder.Entity("BeautyClinic.Core.ValueObjects.Address", b =>
+                {
+                    b.HasOne("BeautyClinic.Core.Models.Clinic.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("BeautyClinic.Core.Models.Patient.Measurements", b =>

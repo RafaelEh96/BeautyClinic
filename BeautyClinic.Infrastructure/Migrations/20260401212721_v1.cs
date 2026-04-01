@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -7,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BeautyClinic.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,11 +15,28 @@ namespace BeautyClinic.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Clinics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Document = table.Column<string>(type: "varchar(18)", maxLength: 18, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clinics", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Street = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Number = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
@@ -42,11 +58,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -54,8 +77,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "Procedure",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ProcedureName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DurationInMinutes = table.Column<int>(type: "int", nullable: false),
@@ -72,11 +94,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Procedure", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Procedure_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -84,14 +113,14 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "ProcedurePack",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     PackName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    SessionsQuantity = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -99,11 +128,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProcedurePack", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProcedurePack_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -111,13 +147,12 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "Individual",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Email = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Phone = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AddressId = table.Column<long>(type: "bigint", nullable: false),
+                    AddressId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Birthdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -131,7 +166,8 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -141,6 +177,12 @@ namespace BeautyClinic.Infrastructure.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Individual_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -148,8 +190,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "Professional",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -160,7 +201,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Phone = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AddressId = table.Column<long>(type: "bigint", nullable: false),
+                    AddressId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ProfessionalNumber = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ProfessionalCouncil = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
@@ -174,7 +215,8 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -184,6 +226,12 @@ namespace BeautyClinic.Infrastructure.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Professional_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -191,10 +239,9 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "ProcedurePackProcedures",
                 columns: table => new
                 {
-                    ProcedurePackId = table.Column<long>(type: "bigint", nullable: false),
-                    ProcedureId = table.Column<long>(type: "bigint", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    ProcedurePackId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ProcedureId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -202,11 +249,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProcedurePackProcedures", x => new { x.ProcedurePackId, x.ProcedureId });
+                    table.ForeignKey(
+                        name: "FK_ProcedurePackProcedures_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProcedurePackProcedures_ProcedurePack_ProcedurePackId",
                         column: x => x.ProcedurePackId,
@@ -226,8 +280,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "FacialAnamnesis",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     MainComplaints = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     MelaninRelatedPigmentSpotsPresent = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -252,11 +305,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false)
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FacialAnamnesis", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FacialAnamnesis_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FacialAnamnesis_Individual_ClientId",
                         column: x => x.ClientId,
@@ -270,8 +330,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "FemaleHabits",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     BalencedDiet = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     RegularBowels = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     RegularSleep = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -290,7 +349,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                     Breastfeeding = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     HasChildren = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     NumberOfChildren = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -298,11 +357,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FemaleHabits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FemaleHabits_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FemaleHabits_Individual_ClientId",
                         column: x => x.ClientId,
@@ -316,8 +382,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "Habits",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     BalencedDiet = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     RegularBowels = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     RegularSleep = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -330,7 +395,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                     AcidsUsed = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UsesDailySunscreen = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -338,11 +403,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Habits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Habits_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Habits_Individual_ClientId",
                         column: x => x.ClientId,
@@ -356,8 +428,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "Measurements",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Weight = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Height = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Bust = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
@@ -370,7 +441,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                     LeftCalf = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     RightCalf = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     MeasurementDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -378,11 +449,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Measurements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Measurements_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Measurements_Individual_ClientId",
                         column: x => x.ClientId,
@@ -396,8 +474,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "PatientHistory",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     PreviousTreatments = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Allergies = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
@@ -411,7 +488,7 @@ namespace BeautyClinic.Infrastructure.Migrations
                     DentalProstheses = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Epilepsy = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     UnderMedicalTreatment = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -419,11 +496,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PatientHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PatientHistory_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PatientHistory_Individual_ClientId",
                         column: x => x.ClientId,
@@ -437,14 +521,13 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "Appointment",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ProcedureRoom = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProcedureId = table.Column<long>(type: "bigint", nullable: false),
+                    ProcedureId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     AppointmentDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ProfessionalId = table.Column<long>(type: "bigint", nullable: false),
+                    ProfessionalId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -453,11 +536,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                     UpdatedBy = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointment_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointment_Individual_ClientId",
                         column: x => x.ClientId,
@@ -483,11 +573,10 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "BodyAnamnesis",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     MainComplaints = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MeasurementId = table.Column<long>(type: "bigint", nullable: false),
+                    MeasurementId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ChosenTreatmentNotes = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AssessmentDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -501,11 +590,18 @@ namespace BeautyClinic.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false)
+                    ClinicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BodyAnamnesis", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BodyAnamnesis_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BodyAnamnesis_Individual_ClientId",
                         column: x => x.ClientId,
@@ -522,9 +618,19 @@ namespace BeautyClinic.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Addresses_ClinicId",
+                table: "Addresses",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Appointment_ClientId",
                 table: "Appointment",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointment_ClinicId",
+                table: "Appointment",
+                column: "ClinicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointment_ProcedureId",
@@ -542,6 +648,11 @@ namespace BeautyClinic.Infrastructure.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BodyAnamnesis_ClinicId",
+                table: "BodyAnamnesis",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BodyAnamnesis_MeasurementId",
                 table: "BodyAnamnesis",
                 column: "MeasurementId");
@@ -552,9 +663,19 @@ namespace BeautyClinic.Infrastructure.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FacialAnamnesis_ClinicId",
+                table: "FacialAnamnesis",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FemaleHabits_ClientId",
                 table: "FemaleHabits",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FemaleHabits_ClinicId",
+                table: "FemaleHabits",
+                column: "ClinicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Habits_ClientId",
@@ -562,9 +683,19 @@ namespace BeautyClinic.Infrastructure.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Habits_ClinicId",
+                table: "Habits",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Individual_AddressId",
                 table: "Individual",
                 column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Individual_ClinicId",
+                table: "Individual",
+                column: "ClinicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Measurements_ClientId",
@@ -572,9 +703,34 @@ namespace BeautyClinic.Infrastructure.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Measurements_ClinicId",
+                table: "Measurements",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PatientHistory_ClientId",
                 table: "PatientHistory",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PatientHistory_ClinicId",
+                table: "PatientHistory",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Procedure_ClinicId",
+                table: "Procedure",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProcedurePack_ClinicId",
+                table: "ProcedurePack",
+                column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProcedurePackProcedures_ClinicId",
+                table: "ProcedurePackProcedures",
+                column: "ClinicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProcedurePackProcedures_ProcedureId",
@@ -585,6 +741,11 @@ namespace BeautyClinic.Infrastructure.Migrations
                 name: "IX_Professional_AddressId",
                 table: "Professional",
                 column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Professional_ClinicId",
+                table: "Professional",
+                column: "ClinicId");
         }
 
         /// <inheritdoc />
@@ -628,6 +789,9 @@ namespace BeautyClinic.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Clinics");
         }
     }
 }
