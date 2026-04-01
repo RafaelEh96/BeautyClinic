@@ -16,8 +16,8 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
         return Ok(appointments);
     }
 
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetAppointmentById(long id)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetAppointmentById(Guid id)
     {try
         {
             var appointment = await appointmentService.GetAppointmentByIdAsync(id);
@@ -29,8 +29,8 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
         }
     }
 
-    [HttpGet("date?dataInicial={dataInicial}&dataFinal={dataFinal}")]
-    public async Task<IActionResult> GetAppointmentsByDateRange(DateTime dataInicial, DateTime dataFinal)
+    [HttpGet("date")]
+    public async Task<IActionResult> GetAppointmentsByDateRange([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
     {
         var appointments = await appointmentService.GetByDateRangeAsync(dataInicial, dataFinal);
         return Ok(appointments);
@@ -43,8 +43,8 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
         return CreatedAtAction(nameof(GetAppointmentById), new { id = result.Id }, result);
     }
     
-    [HttpPut("{id:long}")]
-    public async Task<IActionResult> UpdateAppointment(long id, AppointmentDto dto)
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateAppointment(Guid id, AppointmentDto dto)
     {
         try
         {
@@ -57,8 +57,8 @@ public class AppointmentController(IAppointmentService appointmentService) : Con
         }
     }
 
-    [HttpDelete("{id:long}")]
-    public async Task<IActionResult> DeleteAppointment(long id)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteAppointment(Guid id)
     {
         try
         {

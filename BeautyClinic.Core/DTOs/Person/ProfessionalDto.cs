@@ -5,7 +5,7 @@ namespace BeautyClinic.Core.DTOs.Person;
 
 public class ProfessionalDto
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public EProfessionalType Type { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Cpf { get; set; } = string.Empty;

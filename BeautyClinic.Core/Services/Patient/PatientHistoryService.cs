@@ -8,6 +8,6 @@ namespace BeautyClinic.Core.Services.Patient;
 public class PatientHistoryService(IPatientHistoryRepository repository, IUnitOfWork unitOfWork)
     : BaseService<PatientHistory>(repository, unitOfWork), IPatientHistoryService
 {
-    public Task<PatientHistoryDto> GetPatientHistoryByClientId(long entityClientId)
+    public Task<PatientHistoryDto> GetPatientHistoryByClientId(Guid entityClientId)
         => repository.GetPatientHistoryByClientId(entityClientId);
 }

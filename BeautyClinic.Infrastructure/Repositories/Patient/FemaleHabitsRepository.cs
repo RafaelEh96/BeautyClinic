@@ -11,7 +11,7 @@ namespace BeautyClinic.Infrastructure.Repositories.Patient;
 
 public class FemaleHabitsRepository(AppDbContext context, ITenantProvider tenantProvider) : Repository<FemaleHabits>(context, tenantProvider), IFemaleHabitsRepository
 {
-    public async Task<FemaleHabitsDto> GetFemaleHabitsByClientId(long clientId)
+    public async Task<FemaleHabitsDto> GetFemaleHabitsByClientId(Guid clientId)
     {
         var entity = await _context.FemaleHabits.AsNoTracking().FirstOrDefaultAsync(x => x.ClientId == clientId);
         if (entity is null)

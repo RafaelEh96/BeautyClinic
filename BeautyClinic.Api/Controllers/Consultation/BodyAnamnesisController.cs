@@ -9,8 +9,8 @@ namespace BeautyClinic.Api.Controllers.Consultation;
 [Route("api/v1/[controller]")]
 public class BodyAnamnesisController(IBodyAnamnesisService service) : ControllerBase
 {
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetBodyAnamnesisById(long id)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetBodyAnamnesisById(Guid id)
     {
         try
         {
@@ -31,8 +31,8 @@ public class BodyAnamnesisController(IBodyAnamnesisService service) : Controller
         return CreatedAtAction(nameof(GetBodyAnamnesisById), new { id = result.Id }, result);
     }
 
-    [HttpPut("{id:long}")]
-    public async Task<IActionResult> UpdateBodyAnamnesis(long id, BodyAnamnesisDto dto)
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateBodyAnamnesis(Guid id, BodyAnamnesisDto dto)
     {
         try
         {

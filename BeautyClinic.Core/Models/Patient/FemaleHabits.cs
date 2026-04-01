@@ -23,6 +23,6 @@ public class FemaleHabits : BaseEntity
     public bool Breastfeeding { get; set; }
     public bool HasChildren { get; set; }
     public int? NumberOfChildren { get; set; }
-    public long ClientId { get; set; }
+    public Guid ClientId { get; set; }
     public Individual Client { get; set; } = new();
 }

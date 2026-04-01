@@ -13,7 +13,7 @@ namespace BeautyClinic.Infrastructure.Context;
 
 public class AppDbContext : DbContext
 {
-    private readonly long _clinicId;
+    private readonly Guid _clinicId;
 
     public AppDbContext(DbContextOptions<AppDbContext> options, ITenantProvider tenantProvider) : base(options)
     {

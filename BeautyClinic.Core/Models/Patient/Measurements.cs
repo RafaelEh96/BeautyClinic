@@ -18,7 +18,7 @@ public class Measurements : BaseEntity
     public double LeftCalf { get; set; }
     public double RightCalf { get; set; }
     public DateTime MeasurementDate { get; set; }
-    public long ClientId { get; set; }
+    public Guid ClientId { get; set; }
     public Individual Client { get; set; } = new();
     public List<BodyAnamnesis> BodyAnamneses { get; set; } = [];
 }

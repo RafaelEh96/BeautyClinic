@@ -5,6 +5,6 @@ namespace BeautyClinic.Core.Interfaces.Procedure;
 
 public interface IProcedurePackProcedureRepository : IRepository<ProcedurePackProcedure>
 {
-    Task<IEnumerable<ProcedurePackProcedure>> GetByPackIdAsync(long packId);
-    Task RemoveByPackIdAsync(long packId);
+    Task<IEnumerable<ProcedurePackProcedure>> GetByPackIdAsync(Guid packId);
+    Task RemoveByPackIdAsync(Guid packId);
 }

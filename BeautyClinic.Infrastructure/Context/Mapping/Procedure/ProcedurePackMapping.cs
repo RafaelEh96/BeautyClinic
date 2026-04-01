@@ -24,8 +24,7 @@ public class ProcedurePackMapping : IEntityTypeConfiguration<Core.Models.Procedu
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.PackName)
         .IsRequired()

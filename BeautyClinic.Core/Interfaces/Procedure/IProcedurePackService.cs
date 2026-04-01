@@ -5,6 +5,6 @@ namespace BeautyClinic.Core.Interfaces.Procedure;
 
 public interface IProcedurePackService : IService<ProcedurePack>
 {
-    Task CreatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<long> procedureIds);
-    Task UpdatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<long> procedureIds);
+    Task CreatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<Guid> procedureIds);
+    Task UpdatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<Guid> procedureIds);
 }

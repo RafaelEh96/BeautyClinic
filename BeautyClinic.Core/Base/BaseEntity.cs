@@ -4,13 +4,13 @@ namespace BeautyClinic.Core.Base;
 
 public abstract class BaseEntity
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
-    public bool IsSaved => Id > 0;
+    public bool IsSaved => Id != Guid.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? UpdatedAt { get; set; }
     public string UpdatedBy { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
-    public long ClinicId { get; set; }
+    public Guid ClinicId { get; set; }
     public Clinic? Clinic { get; set; }
 }

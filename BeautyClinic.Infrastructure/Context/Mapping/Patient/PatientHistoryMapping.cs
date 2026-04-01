@@ -25,8 +25,7 @@ public class PatientHistoryMapping : IEntityTypeConfiguration<PatientHistory>
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.PreviousTreatments)
         .IsRequired()

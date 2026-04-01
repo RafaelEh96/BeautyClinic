@@ -6,8 +6,8 @@ namespace BeautyClinic.Core.DTOs.Consultation;
 
 public class FacialAnamnesisDto
 {
-    public long Id { get; set; }
-    public long ClientId { get; set; }
+    public Guid Id { get; set; }
+    public Guid ClientId { get; set; }
     public string MainComplaints { get; set; } = string.Empty;
     public bool MelaninRelatedPigmentSpotsPresent { get; set; }
     public bool VascularAlterationSpotsPresent { get; set; }

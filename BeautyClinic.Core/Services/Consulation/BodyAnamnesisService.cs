@@ -18,7 +18,7 @@ public class BodyAnamnesisService(
     IUnitOfWork unitOfWork)
     : BaseService<BodyAnamnesis>(repository, unitOfWork), IBodyAnamnesisService
 {
-    public async Task<BodyAnamnesisDto> GetBodyAnamnesisByIdAsync(long id)
+    public async Task<BodyAnamnesisDto> GetBodyAnamnesisByIdAsync(Guid id)
     {
         var entity = await repository.GetByIdAsync(id);
         if (entity is null)

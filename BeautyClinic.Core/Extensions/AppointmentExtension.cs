@@ -32,4 +32,14 @@ public static class AppointmentExtension
             Status = entity.Status
         };
     }
+
+    public static void ApplyFromDto(this Appointment entity, AppointmentDto dto)
+    {
+        entity.ClientId = dto.ClientId;
+        entity.ProcedureId = dto.ProcedureId;
+        entity.ProcedureRoom = dto.ProcedureRoom;
+        entity.ProfessionalId = dto.ProfessionalId;
+        entity.AppointmentDate = dto.AppointmentDate;
+        entity.Status = dto.Status;
+    }
 }

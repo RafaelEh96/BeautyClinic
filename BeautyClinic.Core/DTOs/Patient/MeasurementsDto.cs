@@ -2,7 +2,7 @@
 
 public class MeasurementsDto
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public double Weight { get; set; }
     public double Height { get; set; }
     public double Bust { get; set; }
@@ -15,5 +15,5 @@ public class MeasurementsDto
     public double LeftCalf { get; set; }
     public double RightCalf { get; set; }
     public DateTime MeasurementDate { get; set; }
-    public long ClientId { get; set; }
+    public Guid ClientId { get; set; }
 }

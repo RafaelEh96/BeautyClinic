@@ -4,7 +4,7 @@ namespace BeautyClinic.Core.DTOs.Patient;
 
 public class HabitsDto
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public bool BalencedDiet { get; set; }
     public bool RegularBowels { get; set; }
     public bool RegularSleep { get; set; }
@@ -16,5 +16,5 @@ public class HabitsDto
     public EAlcoholConsumptionFrequency AlcoholConsumptionFrequency { get; set; }
     public string AcidsUsed { get; set; } = string.Empty;
     public bool UsesDailySunscreen { get; set; }
-    public long ClientId { get; set; }
+    public Guid ClientId { get; set; }
 }

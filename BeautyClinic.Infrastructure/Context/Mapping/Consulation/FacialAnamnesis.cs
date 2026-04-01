@@ -25,8 +25,7 @@ public class FacialAnamnesisMapping : IEntityTypeConfiguration<FacialAnamnesis>
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.MainComplaints)
         .IsRequired()

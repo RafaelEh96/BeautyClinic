@@ -4,7 +4,7 @@ namespace BeautyClinic.Core.DTOs.Procedure;
 
 public class ProcedureDto
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public string ProcedureName { get; set; } = string.Empty;
     public int DurationInMinutes { get; set; }
     public string EquipmentUsed { get; set; } = string.Empty;

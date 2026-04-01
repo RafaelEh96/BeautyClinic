@@ -12,7 +12,7 @@ namespace BeautyClinic.Infrastructure.Repositories.Patient;
 public class PatientHistoryRepository(AppDbContext context, ITenantProvider tenantProvider)
     : Repository<PatientHistory>(context, tenantProvider), IPatientHistoryRepository
 {
-    public async Task<PatientHistoryDto> GetPatientHistoryByClientId(long clientId)
+    public async Task<PatientHistoryDto> GetPatientHistoryByClientId(Guid clientId)
     {
         var entity = await _context.PatientHistories.AsNoTracking().FirstOrDefaultAsync(x => x.ClientId == clientId);
         

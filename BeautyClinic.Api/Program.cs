@@ -1,4 +1,5 @@
 using BeautyClinic.Api.Commons;
+using BeautyClinic.Api.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfigurations();
@@ -11,14 +12,12 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+    app.AddDevConfiguration();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseSecurity();
 
-app.MapControllers();
+app.MapEndpoints();
 
 app.Run();

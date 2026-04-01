@@ -5,5 +5,5 @@ namespace BeautyClinic.Core.Interfaces.Patient;
 
 public interface IPatientHistoryRepository : IRepository<PatientHistory>
 {
-    Task<PatientHistoryDto> GetPatientHistoryByClientId(long clientId);
+    Task<PatientHistoryDto> GetPatientHistoryByClientId(Guid clientId);
 }

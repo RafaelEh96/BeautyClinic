@@ -22,21 +22,20 @@ public class AppointmentService(IAppointmentRepository repository, IUnitOfWork u
         return result;
     }
 
-    public async Task<AppointmentDto> UpdateAppointmentAsync(long id, AppointmentDto dto)
+    public async Task<AppointmentDto> UpdateAppointmentAsync(Guid id, AppointmentDto dto)
     {
         var existingAppointment = await GetByIdAsync(id);
         if (existingAppointment == null)
             throw new ResourceNotFoundException("Agendamento não encontrado.");
 
-        existingAppointment = dto.MapToEntity();
+        existingAppointment.ApplyFromDto(dto);
         await UpdateAsync(existingAppointment);
-        var result = existingAppointment.MapToDto();
-        return result;
+        return existingAppointment.MapToDto();
     }
 
-    public async Task DeleteAppointmentAsync(long id)
+    public async Task DeleteAppointmentAsync(Guid id)
     {
-        var existingAppointment = GetByIdAsync(id).Result;
+        var existingAppointment = await GetByIdAsync(id);
         if (existingAppointment == null)
             throw new ResourceNotFoundException("Agendamento não encontrado.");
 
@@ -49,12 +48,12 @@ public class AppointmentService(IAppointmentRepository repository, IUnitOfWork u
         return appointments;
     }
 
-    public async Task<AppointmentDto> GetAppointmentByIdAsync(long id)
+    public async Task<AppointmentDto> GetAppointmentByIdAsync(Guid id)
     {
-        return await repository.GetByIdAsync(id).ContinueWith(task =>
-        {
-            var appointment = task.Result;
-            return appointment?.MapToDto();
-        }) ?? throw new ResourceNotFoundException("Agendamento não encontrado.");
+        var appointment = await repository.GetByIdAsync(id);
+        if (appointment == null)
+            throw new ResourceNotFoundException("Agendamento não encontrado.");
+
+        return appointment.MapToDto();
     }
 }

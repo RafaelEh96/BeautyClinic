@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using BeautyClinic.Core.Base;
+using BeautyClinic.Core.Extensions;
 using BeautyClinic.Core.Interfaces;
 using BeautyClinic.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         _tenantProvider = tenantProvider;
     }
 
-    public async Task<T?> GetByIdAsync(long id)
+    public async Task<T?> GetByIdAsync(Guid id)
     {
         return await _dbSet.FindAsync(id);
     }
@@ -36,6 +37,8 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
     public async Task AddAsync(T entity)
     {
+        if (entity.Id == Guid.Empty)
+            entity.Id = GuidExtensions.NewId();
         entity.ClinicId = _tenantProvider.GetClinicId();
         await _dbSet.AddAsync(entity);
     }

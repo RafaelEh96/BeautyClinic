@@ -13,7 +13,7 @@ public class Professional : BaseEntity
     public string Email { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public Address Address { get; set; } = null!;
-    public long AddressId { get; set; }
+    public Guid AddressId { get; set; }
     public string ProfessionalNumber { get; set; } = string.Empty;
     public string ProfessionalCouncil { get; set; } = string.Empty;
     public string ProfessionalCouncilState { get; set; } = string.Empty;

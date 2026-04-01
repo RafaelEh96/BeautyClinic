@@ -24,8 +24,7 @@ public class AppointmentMapping : IEntityTypeConfiguration<Core.Models.Appointme
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.ProcedureRoom)
         .IsRequired()

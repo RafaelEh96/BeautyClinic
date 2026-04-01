@@ -24,8 +24,7 @@ public class ProcedureMapping : IEntityTypeConfiguration<Core.Models.Procedure.P
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.ProcedureName)
         .IsRequired()

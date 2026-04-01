@@ -8,6 +8,6 @@ namespace BeautyClinic.Core.Services.Patient;
 public class FemaleHabitsService(IFemaleHabitsRepository repository, IUnitOfWork unitOfWork)
     : BaseService<FemaleHabits>(repository, unitOfWork), IFemaleHabitsService
 {
-    public Task<FemaleHabitsDto> GetFemaleHabitsByClientId(long entityClientId)
+    public Task<FemaleHabitsDto> GetFemaleHabitsByClientId(Guid entityClientId)
         => repository.GetFemaleHabitsByClientId(entityClientId);
 }

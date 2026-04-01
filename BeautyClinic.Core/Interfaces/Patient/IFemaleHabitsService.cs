@@ -6,5 +6,5 @@ namespace BeautyClinic.Core.Interfaces.Patient;
 
 public interface IFemaleHabitsService : IService<FemaleHabits>
 {
-    Task<FemaleHabitsDto> GetFemaleHabitsByClientId(long entityClientId);
+    Task<FemaleHabitsDto> GetFemaleHabitsByClientId(Guid entityClientId);
 }

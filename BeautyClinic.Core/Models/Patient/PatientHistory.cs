@@ -15,6 +15,6 @@ public class PatientHistory : BaseEntity
     public bool DentalProstheses { get; set; }
     public bool Epilepsy { get; set; }
     public bool UnderMedicalTreatment { get; set; }
-    public long ClientId { get; set; }
+    public Guid ClientId { get; set; }
     public Individual Client { get; set; } = new();
 }

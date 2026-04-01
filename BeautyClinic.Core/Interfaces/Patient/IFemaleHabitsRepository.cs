@@ -5,5 +5,5 @@ namespace BeautyClinic.Core.Interfaces.Patient;
 
 public interface IFemaleHabitsRepository : IRepository<FemaleHabits>
 {
-    Task<FemaleHabitsDto> GetFemaleHabitsByClientId(long clientId);
+    Task<FemaleHabitsDto> GetFemaleHabitsByClientId(Guid clientId);
 }

@@ -25,8 +25,7 @@ public class IndividualMapping : IEntityTypeConfiguration<Individual>
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.Email)
         .IsRequired(false)

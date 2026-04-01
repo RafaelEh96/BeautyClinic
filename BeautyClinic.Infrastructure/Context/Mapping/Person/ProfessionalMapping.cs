@@ -25,8 +25,7 @@ public class ProfessionalMapping : IEntityTypeConfiguration<Professional>
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.Email)
         .IsRequired(false)

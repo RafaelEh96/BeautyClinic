@@ -25,8 +25,7 @@ public class AddressMapping : IEntityTypeConfiguration<Address>
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.Street)
         .IsRequired()

@@ -17,6 +17,6 @@ public class Habits : BaseEntity
     public EAlcoholConsumptionFrequency AlcoholConsumptionFrequency { get; set; }
     public string AcidsUsed { get; set; } = string.Empty;
     public bool UsesDailySunscreen { get; set; }
-    public long ClientId { get; set; }
+    public Guid ClientId { get; set; }
     public Individual Client { get; set; } = new();
 }

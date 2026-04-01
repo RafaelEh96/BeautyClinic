@@ -13,8 +13,7 @@ public class ClinicMapping : IEntityTypeConfiguration<Core.Models.Clinic.Clinic>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
-            .ValueGeneratedOnAdd()
-            .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.Name)
             .IsRequired()

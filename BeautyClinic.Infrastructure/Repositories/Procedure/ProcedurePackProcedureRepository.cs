@@ -9,12 +9,12 @@ namespace BeautyClinic.Infrastructure.Repositories.Procedure;
 public class ProcedurePackProcedureRepository(AppDbContext context, ITenantProvider tenantProvider)
     : Repository<ProcedurePackProcedure>(context, tenantProvider), IProcedurePackProcedureRepository
 {
-    public async Task<IEnumerable<ProcedurePackProcedure>> GetByPackIdAsync(long packId)
+    public async Task<IEnumerable<ProcedurePackProcedure>> GetByPackIdAsync(Guid packId)
     {
         return await _dbSet.Where(p => p.ProcedurePackId == packId).ToListAsync();
     }
 
-    public async Task RemoveByPackIdAsync(long packId)
+    public async Task RemoveByPackIdAsync(Guid packId)
     {
         var items = await _dbSet.Where(p => p.ProcedurePackId == packId).ToListAsync();
         _dbSet.RemoveRange(items);

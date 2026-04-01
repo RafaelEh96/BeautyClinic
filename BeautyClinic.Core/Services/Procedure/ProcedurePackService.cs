@@ -16,7 +16,7 @@ public class ProcedurePackService : BaseService<ProcedurePack>, IProcedurePackSe
         _packProcedureRepository = packProcedureRepository;
     }
 
-    public async Task CreatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<long> procedureIds)
+    public async Task CreatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<Guid> procedureIds)
     {
         await ExecuteInTransactionAsync(async () =>
         {
@@ -37,7 +37,7 @@ public class ProcedurePackService : BaseService<ProcedurePack>, IProcedurePackSe
         });
     }
 
-    public async Task UpdatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<long> procedureIds)
+    public async Task UpdatePackWithProceduresAsync(ProcedurePack pack, IEnumerable<Guid> procedureIds)
     {
         await ExecuteInTransactionAsync(async () =>
         {

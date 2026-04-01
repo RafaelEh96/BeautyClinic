@@ -10,7 +10,7 @@ public class Individual : BaseEntity
 {
     public string Email { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
-    public long AddressId { get; set; }
+    public Guid AddressId { get; set; }
     public Address Address { get; set; } = new();
     public string Name { get; set; } = string.Empty;
     public DateTime? Birthdate { get; set; }

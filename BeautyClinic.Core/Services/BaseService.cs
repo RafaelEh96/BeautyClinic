@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using System.Security.Claims;
 using BeautyClinic.Core.Base;
 using BeautyClinic.Core.Interfaces;
 
@@ -39,7 +38,7 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
     private async Task<T> Inserting(T entity)
     {
         entity.CreatedAt = DateTime.UtcNow;
-        entity.UserId = ClaimsPrincipal.Current?.Identity?.Name ?? string.Empty;
+        entity.UserId = string.Empty; // TODO: substituir por httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) após implementação do JWT
         await ExecuteWithCommitAsync(() => _repository.AddAsync(entity));
         return entity;
     }
@@ -47,7 +46,7 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
     private async Task<T> Updating(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
-        entity.UserId = ClaimsPrincipal.Current?.Identity?.Name ?? string.Empty;
+        entity.UserId = string.Empty; // TODO: substituir por httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) após implementação do JWT
         await ExecuteWithCommitAsync(() =>
         {
             _repository.Update(entity);
@@ -60,7 +59,7 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
     
     protected virtual void PostInsertOrUpdate(T entity){}
 
-    public virtual async Task<T?> GetByIdAsync(long id)
+    public virtual async Task<T?> GetByIdAsync(Guid id)
     {
         return await _repository.GetByIdAsync(id);
     }
@@ -89,7 +88,7 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
         });
     }
 
-    public virtual async Task RemoveAsync(long id)
+    public virtual async Task RemoveAsync(Guid id)
     {
         var entity = await _repository.GetByIdAsync(id);
         if (entity != null)

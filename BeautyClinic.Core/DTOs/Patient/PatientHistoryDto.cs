@@ -2,7 +2,7 @@
 
 public class PatientHistoryDto
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
     public string PreviousTreatments { get; set; } = string.Empty;
     public string Allergies { get; set; } = string.Empty;
     public string OncologicalTreatments { get; set; } = string.Empty;
@@ -13,5 +13,5 @@ public class PatientHistoryDto
     public bool DentalProstheses { get; set; }
     public bool Epilepsy { get; set; }
     public bool UnderMedicalTreatment { get; set; }
-    public long ClientId { get; set; }
+    public Guid ClientId { get; set; }
 }

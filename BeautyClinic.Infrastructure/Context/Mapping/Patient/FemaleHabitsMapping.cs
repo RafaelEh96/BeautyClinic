@@ -25,8 +25,7 @@ public class FemaleHabitsMapping : IEntityTypeConfiguration<FemaleHabits>
         .IsRequired(false);
 
         builder.Property(x => x.Id)
-        .ValueGeneratedOnAdd()
-        .UseMySqlIdentityColumn();
+        .ValueGeneratedNever();
 
         builder.Property(x => x.BalencedDiet)
         .IsRequired();
