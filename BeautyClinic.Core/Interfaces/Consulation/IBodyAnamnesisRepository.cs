@@ -5,4 +5,5 @@ namespace BeautyClinic.Core.Interfaces.Consulation;
 
 public interface IBodyAnamnesisRepository : IRepository<BodyAnamnesis>
 {
+    Task<BodyAnamnesis?> GetByIdWithDetailsAsync(Guid id);
 }

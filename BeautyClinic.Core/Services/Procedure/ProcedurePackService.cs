@@ -21,7 +21,6 @@ public class ProcedurePackService : BaseService<ProcedurePack>, IProcedurePackSe
         await ExecuteInTransactionAsync(async () =>
         {
             await _repository.AddAsync(pack);
-            await _unitOfWork.CommitAsync();
 
             foreach (var procedureId in procedureIds)
             {
@@ -32,8 +31,6 @@ public class ProcedurePackService : BaseService<ProcedurePack>, IProcedurePackSe
                 };
                 await _packProcedureRepository.AddAsync(packProcedure);
             }
-
-            await _unitOfWork.CommitAsync();
         });
     }
 
@@ -54,8 +51,6 @@ public class ProcedurePackService : BaseService<ProcedurePack>, IProcedurePackSe
                 };
                 await _packProcedureRepository.AddAsync(packProcedure);
             }
-
-            await _unitOfWork.CommitAsync();
         });
     }
 }

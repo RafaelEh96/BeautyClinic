@@ -10,6 +10,11 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
     protected readonly IRepository<T> _repository = repository;
     protected readonly IUnitOfWork _unitOfWork = unitOfWork;
 
+    /// <summary>
+    /// Stageia um insert ou update no change tracker do EF Core, sem commitar.
+    /// Deve ser chamado dentro de <see cref="ExecuteInTransactionAsync"/>, que realiza o commit ao final.
+    /// Para operações standalone (entidade única), use <see cref="AddAsync"/>, <see cref="UpdateAsync"/> ou <see cref="RemoveAsync"/>.
+    /// </summary>
     public async Task<T> InsertOrUpdateAsync(T entity)
     {
         if (entity.IsSaved)
@@ -39,20 +44,16 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
     {
         entity.CreatedAt = DateTime.UtcNow;
         entity.UserId = string.Empty; // TODO: substituir por httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) após implementação do JWT
-        await ExecuteWithCommitAsync(() => _repository.AddAsync(entity));
+        await _repository.AddAsync(entity);
         return entity;
     }
-    
-    private async Task<T> Updating(T entity)
+
+    private Task<T> Updating(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
         entity.UserId = string.Empty; // TODO: substituir por httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) após implementação do JWT
-        await ExecuteWithCommitAsync(() =>
-        {
-            _repository.Update(entity);
-            return Task.CompletedTask;
-        });
-        return entity;
+        _repository.Update(entity);
+        return Task.FromResult(entity);
     }
     
     protected virtual void PreInsertOrUpdate(T entity){}

@@ -20,19 +20,22 @@ public class BodyAnamnesisService(
 {
     public async Task<BodyAnamnesisDto> GetBodyAnamnesisByIdAsync(Guid id)
     {
-        var entity = await repository.GetByIdAsync(id);
+        var entity = await repository.GetByIdWithDetailsAsync(id);
         if (entity is null)
             throw new ResourceNotFoundException("Anamnese não encontrada.");
 
         var result = entity.MapToDto();
-        var measurement = await measurementsService.GetByIdAsync(entity.MeasurementId);
-        var femaleHabits = await femaleHabitsService.GetFemaleHabitsByClientId(entity.ClientId);
-        var habits = await habitsService.GetHabitsByClientId(entity.ClientId);
-        var patientHistory = await patientHistoryService.GetPatientHistoryByClientId(entity.ClientId);
-        result.Measurement = measurement!.MapToDto();
-        result.FemaleHabits = femaleHabits;
-        result.Habits = habits;
-        result.PatientHistory = patientHistory;
+        result.Measurement = entity.Measurement.MapToDto();
+
+        var femaleHabitsTask = femaleHabitsService.GetFemaleHabitsByClientId(entity.ClientId);
+        var habitsTask = habitsService.GetHabitsByClientId(entity.ClientId);
+        var patientHistoryTask = patientHistoryService.GetPatientHistoryByClientId(entity.ClientId);
+
+        await Task.WhenAll(femaleHabitsTask, habitsTask, patientHistoryTask);
+
+        result.FemaleHabits = femaleHabitsTask.Result;
+        result.Habits = habitsTask.Result;
+        result.PatientHistory = patientHistoryTask.Result;
         return result;
     }
 
@@ -54,25 +57,13 @@ public class BodyAnamnesisService(
             var bodyAnamnesis = dto.MapToEntity();
             var measurement = dto.Measurement.MapToEntity();
             var patientHistory = dto.PatientHistory.MapToEntity();
-            var habits = new Habits();
-            var femaleHabits = new FemaleHabits();
 
             bodyAnamnesis = await InsertOrUpdateAsync(bodyAnamnesis);
             measurement = await measurementsService.InsertOrUpdateAsync(measurement);
             patientHistory = await patientHistoryService.InsertOrUpdateAsync(patientHistory);
-            if (dto.Habits != null)
-            {
-                habits = dto.Habits.MapToEntity();
-                habits.ClientId = dto.ClientId;
-                habits = await habitsService.InsertOrUpdateAsync(habits);
-            }
-
-            if (dto.FemaleHabits != null)
-            {
-                femaleHabits = dto.FemaleHabits.MapToEntity();
-                femaleHabits.ClientId = dto.ClientId;
-                femaleHabits = await femaleHabitsService.InsertOrUpdateAsync(femaleHabits);
-            }
+            
+            var habits = await habitsService.InsertOrUpdateAsync(dto.Habits.MapToEntity());
+            var femaleHabits = await femaleHabitsService.InsertOrUpdateAsync(dto.FemaleHabits.MapToEntity());
             
             bodyAnamnesisResult = bodyAnamnesis.MapToDto();
             bodyAnamnesisResult.Measurement = measurement.MapToDto();

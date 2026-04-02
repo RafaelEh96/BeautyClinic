@@ -1,3 +1,4 @@
+using BeautyClinic.Core.DTOs.Consultation;
 using BeautyClinic.Core.Enums;
 
 namespace BeautyClinic.Core.Models.Consulation;
