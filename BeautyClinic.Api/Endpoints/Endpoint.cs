@@ -1,5 +1,6 @@
 using BeautyClinic.Api.Commons;
 using BeautyClinic.Api.Endpoints.Appointment;
+using BeautyClinic.Api.Endpoints.Auth;
 using BeautyClinic.Api.Endpoints.Consulation.BodyAnamnesis;
 using BeautyClinic.Api.Endpoints.Consulation.FacialAnamnesis;
 
@@ -14,9 +15,17 @@ public static class Endpoint
         endpoint.MapGroup("/")
             .WithTags("Health Check")
             .MapGet("/", () => new { message = "OK!" });
-        
+
+        endpoint.MapGroup("v1/auth")
+            .WithTags("Auth")
+            .MapEnpoint<LoginEndpoint>()
+            .MapEnpoint<RegisterEndpoint>()
+            .MapEnpoint<RefreshTokenEndpoint>()
+            .MapEnpoint<ChangePasswordEndpoint>();
+
         endpoint.MapGroup("v1/appointments")
             .WithTags("Appointments")
+            .RequireAuthorization()
             .MapEnpoint<GetAllAppointmentsEndpoint>()
             .MapEnpoint<GetAppointmentByIdEndpoint>()
             .MapEnpoint<CreateAppointmentEndpoint>()
@@ -25,12 +34,14 @@ public static class Endpoint
 
         endpoint.MapGroup("v1/bodyAnamnesis")
             .WithTags("BodyAnamnesis")
+            .RequireAuthorization()
             .MapEnpoint<GetBodyAnamnesisByIdEndpoint>()
             .MapEnpoint<CreateBodyAnamnesisEndpoint>()
             .MapEnpoint<UpdateBodyAnamnesisEndpoint>();
 
         endpoint.MapGroup("v1/consultations")
             .WithTags("Consultations")
+            .RequireAuthorization()
             .MapEnpoint<CreateFacialAnamnesisEndpoint>()
             .MapEnpoint<GetFacialAnamnesisByIdEndpoint>()
             .MapEnpoint<UpdateFacialAnamnesisEndpoint>();
@@ -41,4 +52,4 @@ public static class Endpoint
         TEndpoint.Map(app);
         return app;
     }
-} 
+}

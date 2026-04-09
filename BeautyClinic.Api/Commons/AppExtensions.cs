@@ -8,13 +8,12 @@ public static class AppExtensions
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.MapSwagger().RequireAuthorization();
         }
 
         public void UseSecurity()
         {
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 }
