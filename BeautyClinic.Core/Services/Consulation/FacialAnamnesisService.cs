@@ -2,6 +2,7 @@ using BeautyClinic.Core.DTOs.Consultation;
 using BeautyClinic.Core.Exceptions;
 using BeautyClinic.Core.Extensions;
 using BeautyClinic.Core.Interfaces;
+using BeautyClinic.Core.Interfaces.Auth;
 using BeautyClinic.Core.Interfaces.Consulation;
 using BeautyClinic.Core.Interfaces.Patient;
 using BeautyClinic.Core.Models.Consulation;
@@ -12,8 +13,9 @@ public class FacialAnamnesisService(IFacialAnamnesisRepository repository,
     IPatientHistoryService patientHistoryService,
     IHabitsService habitsService,
     IFemaleHabitsService femaleHabitsService,
-    IUnitOfWork unitOfWork)
-    : BaseService<FacialAnamnesis>(repository, unitOfWork), IFacialAnamnesisService
+    IUnitOfWork unitOfWork,
+    ICurrentUserProvider currentUserProvider)
+    : BaseService<FacialAnamnesis>(repository, unitOfWork, currentUserProvider), IFacialAnamnesisService
 {
     public async Task<FacialAnamnesisDto> CreateFacialAnamnesisAsync(FacialAnamnesisDto dto)
     {

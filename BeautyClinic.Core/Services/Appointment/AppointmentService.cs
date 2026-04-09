@@ -3,11 +3,12 @@ using BeautyClinic.Core.Exceptions;
 using BeautyClinic.Core.Extensions;
 using BeautyClinic.Core.Interfaces;
 using BeautyClinic.Core.Interfaces.Appointment;
+using BeautyClinic.Core.Interfaces.Auth;
 
 namespace BeautyClinic.Core.Services.Appointment;
 
-public class AppointmentService(IAppointmentRepository repository, IUnitOfWork unitOfWork)
-    : BaseService<BeautyClinic.Core.Models.Appointment.Appointment>(repository, unitOfWork), IAppointmentService
+public class AppointmentService(IAppointmentRepository repository, IUnitOfWork unitOfWork, ICurrentUserProvider currentUserProvider)
+    : BaseService<BeautyClinic.Core.Models.Appointment.Appointment>(repository, unitOfWork, currentUserProvider), IAppointmentService
 {
     public Task<List<AppointmentDto>> GetByDateRangeAsync(DateTime dataInicial, DateTime dataFinal)
     {

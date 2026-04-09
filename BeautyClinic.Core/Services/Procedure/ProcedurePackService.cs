@@ -1,4 +1,5 @@
 using BeautyClinic.Core.Interfaces;
+using BeautyClinic.Core.Interfaces.Auth;
 using BeautyClinic.Core.Interfaces.Procedure;
 using BeautyClinic.Core.Models.Procedure;
 
@@ -11,7 +12,8 @@ public class ProcedurePackService : BaseService<ProcedurePack>, IProcedurePackSe
     public ProcedurePackService(
         IProcedurePackRepository repository,
         IProcedurePackProcedureRepository packProcedureRepository,
-        IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ICurrentUserProvider currentUserProvider) : base(repository, unitOfWork, currentUserProvider)
     {
         _packProcedureRepository = packProcedureRepository;
     }

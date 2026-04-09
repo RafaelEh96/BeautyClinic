@@ -1,10 +1,11 @@
 using System.Linq.Expressions;
 using BeautyClinic.Core.Base;
 using BeautyClinic.Core.Interfaces;
+using BeautyClinic.Core.Interfaces.Auth;
 
 namespace BeautyClinic.Core.Services;
 
-public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) : IService<T>
+public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork, ICurrentUserProvider currentUserProvider) : IService<T>
     where T : BaseEntity
 {
     protected readonly IRepository<T> _repository = repository;
@@ -43,7 +44,7 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
     private async Task<T> Inserting(T entity)
     {
         entity.CreatedAt = DateTime.UtcNow;
-        entity.UserId = string.Empty; // TODO: substituir por httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) após implementação do JWT
+        entity.UserId = currentUserProvider.GetUserId();
         await _repository.AddAsync(entity);
         return entity;
     }
@@ -51,7 +52,7 @@ public class BaseService<T>(IRepository<T> repository, IUnitOfWork unitOfWork) :
     private Task<T> Updating(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
-        entity.UserId = string.Empty; // TODO: substituir por httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) após implementação do JWT
+        entity.UserId = currentUserProvider.GetUserId();
         _repository.Update(entity);
         return Task.FromResult(entity);
     }
