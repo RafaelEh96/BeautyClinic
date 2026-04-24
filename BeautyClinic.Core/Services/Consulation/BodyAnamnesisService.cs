@@ -6,7 +6,6 @@ using BeautyClinic.Core.Interfaces.Auth;
 using BeautyClinic.Core.Interfaces.Consulation;
 using BeautyClinic.Core.Interfaces.Patient;
 using BeautyClinic.Core.Models.Consulation;
-using BeautyClinic.Core.Models.Patient;
 
 namespace BeautyClinic.Core.Services.Consulation;
 
@@ -50,7 +49,7 @@ public class BodyAnamnesisService(
     {
         return await CreateOrUpdateBodyAnamnesisDto(bodyAnamnesis);
     }
-    
+
     private async Task<BodyAnamnesisDto> CreateOrUpdateBodyAnamnesisDto(BodyAnamnesisDto dto)
     {
         var bodyAnamnesisResult = new BodyAnamnesisDto();
@@ -63,10 +62,10 @@ public class BodyAnamnesisService(
             bodyAnamnesis = await InsertOrUpdateAsync(bodyAnamnesis);
             measurement = await measurementsService.InsertOrUpdateAsync(measurement);
             patientHistory = await patientHistoryService.InsertOrUpdateAsync(patientHistory);
-            
+
             var habits = await habitsService.InsertOrUpdateAsync(dto.Habits.MapToEntity());
             var femaleHabits = await femaleHabitsService.InsertOrUpdateAsync(dto.FemaleHabits.MapToEntity());
-            
+
             bodyAnamnesisResult = bodyAnamnesis.MapToDto();
             bodyAnamnesisResult.Measurement = measurement.MapToDto();
             bodyAnamnesisResult.PatientHistory = patientHistory.MapToDto();

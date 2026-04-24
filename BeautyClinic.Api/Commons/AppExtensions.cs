@@ -1,3 +1,5 @@
+using BeautyClinic.Api.Middlewares;
+
 namespace BeautyClinic.Api.Commons;
 
 public static class AppExtensions
@@ -14,6 +16,11 @@ public static class AppExtensions
         {
             app.UseAuthentication();
             app.UseAuthorization();
+        }
+
+        public void UseGlobalExceptionHandler()
+        {
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
         }
     }
 }

@@ -21,4 +21,9 @@
     <ProjectReference Include="..\BeautyClinic.Core\BeautyClinic.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\Procedure\" />
+    <Folder Include="Endpoints\Person\" />
+  </ItemGroup>
+
 </Project>
