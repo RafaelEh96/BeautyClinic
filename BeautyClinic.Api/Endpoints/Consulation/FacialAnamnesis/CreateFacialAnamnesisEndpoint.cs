@@ -12,14 +12,7 @@ public class CreateFacialAnamnesisEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(FacialAnamnesisDto dto, IFacialAnamnesisService service)
     {
-        try
-        {
-            var result = await service.CreateFacialAnamnesisAsync(dto);
-            return TypedResults.CreatedAtRoute(result, "GetFacialAnamnesisById", new { id = result.Id });
-        }
-        catch (Exception e)
-        {
-            return TypedResults.InternalServerError(e);
-        }
+        var result = await service.CreateFacialAnamnesisAsync(dto);
+        return TypedResults.CreatedAtRoute(result, "GetFacialAnamnesisById", new { id = result.Id });
     }
 }

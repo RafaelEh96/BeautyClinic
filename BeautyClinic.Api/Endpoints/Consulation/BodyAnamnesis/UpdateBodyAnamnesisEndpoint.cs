@@ -1,6 +1,5 @@
 using BeautyClinic.Api.Commons;
 using BeautyClinic.Core.DTOs.Consultation;
-using BeautyClinic.Core.Exceptions;
 using BeautyClinic.Core.Interfaces.Consulation;
 
 namespace BeautyClinic.Api.Endpoints.Consulation.BodyAnamnesis;
@@ -13,16 +12,9 @@ public class UpdateBodyAnamnesisEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(Guid id, BodyAnamnesisDto dto, IBodyAnamnesisService service)
     {
-        try
-        {
-            var bodyAnamnesis = await service.GetBodyAnamnesisByIdAsync(id);
-            bodyAnamnesis = await service.UpdateBodyAnamnesisAsync(dto);
+        var bodyAnamnesis = await service.GetBodyAnamnesisByIdAsync(id);
+        bodyAnamnesis = await service.UpdateBodyAnamnesisAsync(dto);
 
-            return TypedResults.Ok(bodyAnamnesis);
-        }
-        catch (ResourceNotFoundException e)
-        {
-            return TypedResults.NotFound(e.Message);
-        }
+        return TypedResults.Ok(bodyAnamnesis);
     }
 }

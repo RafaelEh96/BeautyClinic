@@ -13,6 +13,8 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.UseGlobalExceptionHandler();
+
 if (app.Environment.IsDevelopment())
     app.AddDevConfiguration();
 

@@ -1,5 +1,4 @@
 using BeautyClinic.Api.Commons;
-using BeautyClinic.Core.Exceptions;
 using BeautyClinic.Core.Interfaces.Appointment;
 
 namespace BeautyClinic.Api.Endpoints.Appointment;
@@ -12,14 +11,7 @@ public class GetAppointmentByIdEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(Guid id, IAppointmentService service)
     {
-        try
-        {
-            var appointment = await service.GetAppointmentByIdAsync(id);
-            return TypedResults.Ok(appointment);
-        }
-        catch (ResourceNotFoundException e)
-        {
-            return TypedResults.NotFound(e.Message);
-        }
+        var appointment = await service.GetAppointmentByIdAsync(id);
+        return TypedResults.Ok(appointment);
     }
 }
