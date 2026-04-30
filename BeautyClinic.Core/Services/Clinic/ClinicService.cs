@@ -8,6 +8,6 @@ public class ClinicService(IClinicRepository clinicRepository) : IClinicService
     public async Task<ClinicDto> CreateClinicAsync(ClinicDto createClinicDto)
         => await clinicRepository.CreateClinicAsync(createClinicDto);
 
-    public async Task<ClinicDto> UpdateClinicAsync(ClinicDto updateClinicDto)
-        => await clinicRepository.UpdateClinicAsync(updateClinicDto);
+    public async Task<ClinicDto> UpdateClinicAsync(Guid id, ClinicDto updateClinicDto)
+        => await clinicRepository.UpdateClinicAsync(updateClinicDto, id);
 }

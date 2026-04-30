@@ -26,9 +26,9 @@ public class ClinicRepository(AppDbContext context) : IClinicRepository
         return createdClinic;
     }
 
-    public async Task<ClinicDto> UpdateClinicAsync(ClinicDto dto)
+    public async Task<ClinicDto> UpdateClinicAsync(ClinicDto dto, Guid id)
     {
-        var clinic = await clinicContext.FindAsync(dto.Id);
+        var clinic = await clinicContext.FindAsync(id);
         if (clinic == null)
             throw new ResourceNotFoundException("Clinic not found");
         clinic = dto.MapToEntity();

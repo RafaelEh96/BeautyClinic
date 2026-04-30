@@ -5,5 +5,5 @@ namespace BeautyClinic.Core.Interfaces.Clinic;
 public interface IClinicRepository
 {
     Task<ClinicDto> CreateClinicAsync(ClinicDto dto);
-    Task<ClinicDto> UpdateClinicAsync(ClinicDto dto);
+    Task<ClinicDto> UpdateClinicAsync(ClinicDto dto, Guid id);
 }
