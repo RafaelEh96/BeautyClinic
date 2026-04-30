@@ -144,5 +144,11 @@ public static class BuilderExtensions
             builder.Services.AddScoped<IProcedureService, ProcedureService>();
             builder.Services.AddScoped<IProcedurePackProcedureService, ProcedurePackProcedureService>();
         }
+
+        public void AddSwagger()
+        {
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+        }
     }
 }
